@@ -1,10 +1,13 @@
 import express from "express";
 import { upload } from "../middleware/multer.middleware.js";
 import { uploadFileOnCloudinary } from "../utills/cloudinary.utills.js";
+import userRouter from '../routes/user.routes.js';
+
+
 import fs from "fs";
 
 const app = express();
-app.use(express.json('16kb'));
+app.use(express.json({limit:"16kb"}));
 
 const PORT = 3000;
 
@@ -25,6 +28,9 @@ app.post("/upload/files", upload.single("file"), async (req, res) => {
       .json({ message: "File upload failed", error: error.message || error });
   }
 });
+
+// app.use('/api/v1/upload', upload)
+app.use('/api/v1/users', userRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
